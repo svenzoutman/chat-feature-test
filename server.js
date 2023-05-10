@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 const saltRounds = 12;
 require("dotenv").config();
+const socketio = require("socket.io");
 const mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 const chatRouter = require("./routes/chatroute");
@@ -17,8 +18,6 @@ const sharedSession = require('express-socket.io-session');
 // const http = require("http").Server(app);
 const server = http.createServer(app)
 const io = socketio(server)
-// require the socket.io module
-const io = require("socket.io");
 
 //bodyparser middleware
 app.use(express.json());
