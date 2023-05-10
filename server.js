@@ -766,23 +766,23 @@ app.use("/chats", chatRouter);
 //integrating socketio
 // socket = io(http);
 //session
-socket.use(sharedSession(session1, {
+io.use(sharedSession(session1, {
   autoSave: true
 }));
 //database connection
 const Chat = require("./models/chatSchema");
 
 //setup event listener
-socket.on("connection", async (socket) => {
+io.on("connection", async (socket) => {
   console.log("user connected");
   console.log(socket.handshake.session.user.name);
 
-  socket.on("disconnect", function () {
+  io.on("disconnect", function () {
     console.log("user disconnected");
   });
 
   //Somebody is typing
-  socket.on("typing", data => {
+  io.on("typing", data => {
     socket.broadcast.emit("notifyTyping", {
       user: data.user,
       message: data.message
@@ -790,11 +790,11 @@ socket.on("connection", async (socket) => {
   });
 
   //when somebody stops typing
-  socket.on("stopTyping", () => {
+  io.on("stopTyping", () => {
     socket.broadcast.emit("notifyStopTyping");
   });
 
-  socket.on("chat message", async function (msg) {
+  io.on("chat message", async function (msg) {
     console.log("message: " + msg);
 
 
