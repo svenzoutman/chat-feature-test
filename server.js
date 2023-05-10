@@ -764,7 +764,7 @@ app.post("/unlike", async (req, res) => {
 app.use("/chats", chatRouter);
 
 //integrating socketio
-socket = io(http);
+// socket = io(http);
 //session
 socket.use(sharedSession(session1, {
   autoSave: true
