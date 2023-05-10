@@ -21,7 +21,7 @@ const io = require("socket.io");
 //bodyparser middleware
 app.use(express.json());
 
-const port = 443;
+const port = 80;
 const methodOverride = require("method-override");
 const {
   v4: uuidv4
