@@ -4,9 +4,7 @@
   "description": "Matching application for student and tutors",
   "main": "server.js",
   "scripts": {
-    "test": "",
-    "start": "node server.js",
-    "run": "nodemon server.js"
+    "start": "nodemon --exec babel-node src/server.js"
   },
   "repository": {
     "type": "git",
