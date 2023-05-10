@@ -21,7 +21,7 @@ const io = require("socket.io");
 //bodyparser middleware
 app.use(express.json());
 
-const port = 1337;
+const port = 1337 || 3000;
 const methodOverride = require("method-override");
 const {
   v4: uuidv4
@@ -820,5 +820,5 @@ socket.on("connection", async (socket) => {
 
 });
 http.listen(port, '0.0.0.0', () => {
-  console.log("Running on Port: " + port);
+  console.log('"Running on Port: " + ${port}');
 });
