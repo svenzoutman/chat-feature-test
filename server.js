@@ -805,12 +805,14 @@ socket.on("connection", async (socket) => {
 
 
     //broadcast message to everyone in port except yourself.
-
-    socket.broadcast.emit('message', generateMessage(user.username, message));
-        callback()
-    socket.broadcast.emit("received", {
-      message: msg
-    });
+    //broadcast message to everyone in port except yourself.
+    socket.broadcast.emit("received", { message: msg });
+    
+    // socket.broadcast.emit('message', generateMessage(user.username, message));
+    //     callback()
+    // socket.broadcast.emit("received", {
+    //   message: msg
+    // });
 
     //saves chat to the database
     connect.then(async (db) => {
