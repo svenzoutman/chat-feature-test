@@ -819,6 +819,6 @@ socket.on("connection", async (socket) => {
 
 
 });
-http.listen(port, () => {
+http.listen(port, '0.0.0.0', () => {
   console.log("Running on Port: " + port);
 });
