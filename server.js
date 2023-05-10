@@ -821,6 +821,10 @@ io.on("connection", async (socket) => {
 
 
 });
-server.listen(port, () => {
+// server.listen(port, '0.0.0.0', () => {
+//   console.log('Running on Port: ${ port }!');
+// });
+
+server.listen(port, '0.0.0.0', () => {
   console.log(`Server is up on port ${port}!`)
 })
