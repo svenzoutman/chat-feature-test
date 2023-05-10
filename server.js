@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const http = require('http')
+// const http = require('http')
 const express = require("express");
 const app = express();
 const session = require("express-session");
@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 const saltRounds = 12;
 require("dotenv").config();
-const socketio = require("socket.io");
+// const socketio = require("socket.io");
 const mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 const chatRouter = require("./routes/chatroute");
@@ -17,8 +17,14 @@ const sharedSession = require('express-socket.io-session');
 
 //require the http module
 // const http = require("http").Server(app);
-const server = http.createServer(app)
-const io = socketio(server)
+// const server = http.createServer(app)
+// const io = socketio(server)
+
+
+//require the http module
+const http = require("http").Server(app);
+// require the socket.io module
+const io = require("socket.io");
 
 //bodyparser middleware
 app.use(express.json());
@@ -764,25 +770,25 @@ app.post("/unlike", async (req, res) => {
 app.use("/chats", chatRouter);
 
 //integrating socketio
-// socket = io(http);
+socket = io(http);
 //session
-io.use(sharedSession(session1, {
+socket.use(sharedSession(session1, {
   autoSave: true
 }));
 //database connection
 const Chat = require("./models/chatSchema");
 
 //setup event listener
-io.on("connection", async (socket) => {
+socket.on("connection", async (socket) => {
   console.log("user connected");
   console.log(socket.handshake.session.user.name);
 
-  io.on("disconnect", function () {
+  socket.on("disconnect", function () {
     console.log("user disconnected");
   });
 
   //Somebody is typing
-  io.on("typing", data => {
+  socket.on("typing", data => {
     socket.broadcast.emit("notifyTyping", {
       user: data.user,
       message: data.message
@@ -790,15 +796,18 @@ io.on("connection", async (socket) => {
   });
 
   //when somebody stops typing
-  io.on("stopTyping", () => {
+  socket.on("stopTyping", () => {
     socket.broadcast.emit("notifyStopTyping");
   });
 
-  io.on("chat message", async function (msg) {
+  socket.on("chat message", async function (msg) {
     console.log("message: " + msg);
 
 
     //broadcast message to everyone in port except yourself.
+
+    socket.broadcast.emit('message', generateMessage(user.username, message));
+        callback()
     socket.broadcast.emit("received", {
       message: msg
     });
@@ -825,6 +834,6 @@ io.on("connection", async (socket) => {
 //   console.log('Running on Port: ${ port }!');
 // });
 
-server.listen(port, '0.0.0.0', () => {
+http.listen(port, '0.0.0.0', () => {
   console.log(`Server is up on port ${port}!`)
 })
