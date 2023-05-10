@@ -14,14 +14,16 @@ const chatRouter = require("./routes/chatroute");
 const sharedSession = require('express-socket.io-session');
 
 //require the http module
-const http = require("http").Server(app);
+// const http = require("http").Server(app);
+const server = http.createServer(app)
+const io = socketio(server)
 // require the socket.io module
 const io = require("socket.io");
 
 //bodyparser middleware
 app.use(express.json());
 
-const port = 1337 || 3000;
+const port = process.env.port || 3000;
 const methodOverride = require("method-override");
 const {
   v4: uuidv4
@@ -819,6 +821,6 @@ socket.on("connection", async (socket) => {
 
 
 });
-http.listen(port, '0.0.0.0', () => {
+server.listen(port, '0.0.0.0', () => {
   console.log('"Running on Port: " + ${port}');
 });
